@@ -67,7 +67,7 @@ function display_order(order) {
     let delete_icon = document.createElement('i');
     delete_icon.name = order.id;
     delete_icon.classList.add('fas');
-    delete_icon.classList.add('fa-trash-alt');
+    delete_icon.classList.add('fa-eraser');
     delete_button.appendChild(delete_icon);
     delete_button.classList.add('btn');
     delete_button.addEventListener('click', delete_order);
