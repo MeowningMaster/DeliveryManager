@@ -1,5 +1,7 @@
 let couriers_table;
 let couriers_bindings = new Map();
+let couriers_fields = ['name', 'status', 'contacts'];
+let add_modal_prepend = 'add-courier-modal-';
 
 document.addEventListener("DOMContentLoaded", () => {
     couriers_table = document.getElementById('table-couriers-body');
@@ -54,6 +56,62 @@ function display_courier(courier) {
 function add_courier_modal() {
     $('#add-courier-modal').modal('show');
 }
+function clear_add_modal() {
+    couriers_fields.forEach((field) => {
+        let element = document.getElementById(add_modal_prepend + field);
+        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+            element.value = '';
+        } else if (element.tagName === 'SELECT') {
+            element.selectedIndex = 0;
+        }
+    });
+}
+function add_courier() {
+    $('#add-courier-modal').modal('hide');
+
+    let query = get_add_modal_query();
+
+    let link = new XMLHttpRequest();
+    link.onreadystatechange = function() {
+        add_courier_callback(link);
+    }
+
+    link.open('GET', 'php/couriers/add_courier.php'+query);
+    link.send();
+}
+function get_add_modal_query() {
+    let query = '?';
+    couriers_fields.forEach((field) => {
+        let element = document.getElementById(add_modal_prepend + field);
+        query += field+'=\''+element.value+'\'&';
+    });
+    return query;
+}
+function add_courier_callback(link) {
+    if(link.readyState === 4) {
+        if(link.status === 200) {
+            let new_courier_id = link.responseText;
+            let courier = get_add_modal_courier(new_courier_id);
+            display_courier(courier);
+            couriers.set(new_courier_id, courier);
+            clear_add_modal();
+        } else {
+            alert('Не удалось добавить курьера. Проверьте подключение к интернету');
+            console.log(link.response);
+        }
+    }
+}
+function get_add_modal_courier(new_courier_id) {
+    let courier = {};
+    courier['id'] = new_courier_id;
+    couriers_fields.forEach((field) => {
+        let element = document.getElementById(add_modal_prepend + field);
+        courier[field] = element.value;
+    });
+    return courier;
+}
+
+
 
 function edit_courier_modal() {
 

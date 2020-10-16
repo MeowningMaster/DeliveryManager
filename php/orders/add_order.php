@@ -5,13 +5,13 @@
     $query .= 'VALUES('.$_GET['status'].','.$_GET['client'].','.$_GET['contacts'].','.$_GET['city'].','.$_GET['address'].','.$_GET['date'].','.$_GET['time'].','.$_GET['cost'].','.$_GET['details'].','.$_GET['courier_id'].')';
     $result = $link->query($query);
     if ($result === false) {
-        die('Cannot add order');
+        exit('Cannot add order');
     }
 
     $query = 'SELECT MAX(id) FROM orders';
     $result = $link->query($query);
     if ($result === false) {
-        die('Cannot query max(id)');
+        exit('Cannot query orders max(id)');
     }
 
     $max = mysqli_fetch_assoc($result);

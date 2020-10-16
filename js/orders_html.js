@@ -173,7 +173,6 @@ function clear_add_modal() {
 }
 function add_order() {
     $('#add-order-modal').modal('hide');
-    clear_add_modal();
 
     let query = get_add_modal_query();
 
@@ -200,6 +199,7 @@ function add_order_callback(link) {
             let order = get_add_modal_order(new_order_id);
             display_order(order);
             orders.set(new_order_id, order);
+            clear_add_modal();
         } else {
             alert('Не удалось добавить заказ. Проверьте подключение к интернету');
             console.log(link.response);
