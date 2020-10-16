@@ -22,6 +22,7 @@ function request_orders_callback(link, on_ready) {
             }
         } else {
             console.log(link.response);
+            alert('Не удалось загрузить список заказов. Проверьте подключение к интернету');
         }
     }
 }

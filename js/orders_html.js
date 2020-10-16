@@ -42,7 +42,6 @@ function display_order(order) {
         let cell = row.insertCell();
         if (field_id === 'courier_id') {
             cell.innerText = couriers.get(field).name;
-            cell.value = field;
         } else {
             cell.innerText = field;
         }
@@ -60,7 +59,7 @@ function display_order(order) {
     edit_icon.classList.add('fa-edit');
     edit_button.appendChild(edit_icon)
     edit_button.classList.add('btn');
-    edit_button.addEventListener('click', edit_order)
+    edit_button.addEventListener('click', edit_order_modal)
     cell.appendChild(edit_button);
 
     let delete_button = document.createElement('button');
@@ -75,7 +74,7 @@ function display_order(order) {
     cell.appendChild(delete_button);
 }
 
-function edit_order(event) {
+function edit_order_modal(event) {
     let order_id = event.target.name;
     let order = orders.get(order_id);
     fill_edit_modal(order);
@@ -114,8 +113,7 @@ function delete_callback(link, order_id) {
             orders_bindings.delete(order_id);
         } else {
             console.log(link.response);
-            console.log(link.responseText);
-            alert('Нет соединения с базой данных');
+            alert('Не удалось удалить заказ. Проверьте подключение к интернету');
         }
     }
 }
@@ -142,7 +140,7 @@ function delete_all_callback(link) {
         } else {
             console.log(link.response);
             console.log(link.responseText);
-            alert('Нет соединения с базой данных');
+            alert('Не удалось очистить список заказов. Проверьте подключение к интернету');
         }
     }
 }
@@ -160,10 +158,9 @@ function update_couriers() {
 }
 
 function add_order_modal() {
-    clear_add_order_modal();
     $('#add-order-modal').modal('show');
 }
-function clear_add_order_modal() {
+function clear_add_modal() {
     order_fields.forEach((field) => {
         let element = document.getElementById(add_modal_prepend + field);
         if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
@@ -174,6 +171,9 @@ function clear_add_order_modal() {
     });
 }
 function add_order() {
+    $('#add-order-modal').modal('hide');
+    clear_add_modal();
+
     let query = get_add_modal_query();
 
     let link = new XMLHttpRequest();
@@ -198,22 +198,36 @@ function add_order_callback(link) {
             let new_order_id = link.responseText;
             let order = get_add_modal_order(new_order_id);
             display_order(order);
+            orders.set(new_order_id, order);
         } else {
+            alert('Не удалось добавить заказ. Проверьте подключение к интернету');
             console.log(link.response);
         }
     }
 }
-
 function get_add_modal_order(new_order_id) {
     let order = {};
     order['id'] = new_order_id;
     order_fields.forEach((field) => {
         let element = document.getElementById(add_modal_prepend + field);
-        if (field === 'courier_id') {
-            order['courier'] = couriers.get(element.value).name;
-        } else {
-            order[field] = element.value;
-        }
+        order[field] = element.value;
     });
     return order;
+}
+
+function import_excel_modal() {
+    $('#import-excel-modal').modal('show');
+}
+function on_file_change() {
+    let input = document.getElementById('excel-file');
+    let label = document.getElementById('excel-file-label');
+
+    if (input.files.length === 1) {
+        label.innerText = input.files[0].name;
+    } else {
+        label.innerText = 'Выберите .xlsx файл';
+    }
+}
+function import_excel() {
+    $('#import-excel-modal').modal('hide');
 }

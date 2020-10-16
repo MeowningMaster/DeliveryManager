@@ -28,22 +28,27 @@
         <script src="js/orders_html.js"></script>
     </head>
     <body>
-        <!-- Upload From Excel Modal -->
-        <div id="uploadExcel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="uploadExcel" aria-hidden="true">
+        <!-- Import From Excel Modal -->
+        <div id="import-excel-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Импортировать доставки из excel-файла</h5>
+                        <h5 class="modal-title">Импорт заказов из excel</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <b>Внимание!</b> <br />Ознакомьтесь с <a target="_blank" href="https://github.com/ivan8m8/CourierHelperWEB/wiki/%D0%9A%D0%B0%D0%BA-%D0%B8%D0%BC%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D1%82%D1%8C-%D0%B4%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B8-%D0%B2-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%83#%D0%A2%D1%80%D0%B5%D0%B1%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-%D0%BA-%D0%B8%D0%BC%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D1%80%D1%83%D0%B5%D0%BC%D0%BE%D0%BC%D1%83-ex%D1%81el-%D1%84%D0%B0%D0%B9%D0%BB%D1%83-%D1%81-%D0%B4%D0%BE%D1%81%D1%82%D0%B0%D0%B2%D0%BA%D0%B0%D0%BC%D0%B8">требованиями к excel-файлу</a>. <br /><br />
-                        <form method="post" enctype="multipart/form-data">
-                            <input type="file" name="excelFileToUpload" id="excelFileToUpload"/> <br /><br />
-                            <input style="background-color: #0069d9; color: #fff;" class="form-control input-sm pull-right" type="submit" name="submit" value="Загрузить" />
+                        <form>
+                            <div class="custom-file form-group">
+                                <input type="file" class="custom-file-input" id="excel-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="on_file_change()" required>
+                                <label id="excel-file-label" class="custom-file-label" for="excel-file">Выберите .xlsx файл</label>
+                            </div>
                         </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="import_excel()">Импортировать</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                     </div>
                 </div>
             </div>
@@ -222,7 +227,7 @@
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Сохранить</button>
+                        <button type="button" class="btn btn-primary" onclick="edit_order()">Сохранить</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
                     </div>
                 </div>
@@ -244,7 +249,7 @@
                     <button class="btn" onclick="delete_all_orders()"><i class="fas fa-eraser"></i></button>
                 </li>
                 <li class="nav-item nav-btn">
-                    <button class="btn"><i class="fas fa-file-excel"></i></button>
+                    <button class="btn" onclick="import_excel_modal()"><i class="fas fa-file-excel"></i></button>
                 </li>
                 <li class="nav-item nav-btn">
                     <button class="btn" onclick="add_order_modal()"><i class="fas fa-plus"></i></button>

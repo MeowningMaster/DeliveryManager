@@ -23,7 +23,7 @@ function request_couriers_callback(link, on_ready) {
         } else {
             console.log(link.response);
             console.log(link.responseText);
-            alert('Нет соединения с базой данных');
+            alert('Не удалось загрузить список курьеров. Проверьте подключение к интернету');
         }
     }
 }
