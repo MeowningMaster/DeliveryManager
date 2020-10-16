@@ -1,0 +1,33 @@
+body {
+    background: #f8f9fa;
+}
+
+header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+main {
+    overflow: auto;
+    position: absolute;
+    height: calc(100vh - 50px);
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+table {
+    margin-bottom: 0!important;
+}
+
+table th, td {
+    text-align: center;
+}
+
+.nav-btn {
+    margin-left: 5px;
+}
