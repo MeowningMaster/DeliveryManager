@@ -28,32 +28,6 @@
         <script src="js/orders_html.js"></script>
     </head>
     <body>
-        <!-- Import From Excel Modal -->
-        <div id="import-excel-modal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Импорт заказов из excel</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="custom-file form-group">
-                                <input type="file" class="custom-file-input" id="excel-file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" onchange="on_file_change()" required>
-                                <label id="excel-file-label" class="custom-file-label" for="excel-file">Выберите .xlsx файл</label>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onclick="import_excel()">Импортировать</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Add Order Modal -->
         <div id="add-order-modal" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -74,6 +48,8 @@
                                         <option value="Принят">
                                         <option value="Завершён">
                                         <option value="Отменён">
+                                        <option value="Зашёл">
+                                        <option value="Отказ">
                                     </datalist>
                                 </div>
                             </div>
@@ -167,6 +143,8 @@
                                         <option value="Принят">
                                         <option value="Завершён">
                                         <option value="Отменён">
+                                        <option value="Зашёл">
+                                        <option value="Отказ">
                                     </datalist>
                                 </div>
                             </div>
@@ -247,9 +225,6 @@
                 </li>
                 <li class="nav-item nav-btn">
                     <button class="btn" onclick="delete_all_orders()"><i class="fas fa-eraser"></i></button>
-                </li>
-                <li class="nav-item nav-btn">
-                    <button class="btn" onclick="import_excel_modal()"><i class="fas fa-file-excel"></i></button>
                 </li>
                 <li class="nav-item nav-btn">
                     <button class="btn" onclick="add_order_modal()"><i class="fas fa-plus"></i></button>

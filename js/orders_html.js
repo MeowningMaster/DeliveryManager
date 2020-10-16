@@ -93,7 +93,8 @@ function fill_edit_modal(order) {
 
 function delete_order(event) {
     let order_id = event.target.name;
-    let result = confirm('Удалить заказ '+order_id+'?');
+    let order = orders.get(order_id);
+    let result = confirm('Удалить заказ №'+order.id+': '+order.client+' ['+order.date+']'+'?');
 
     if (result) {
         let link = new XMLHttpRequest();
@@ -119,7 +120,7 @@ function delete_callback(link, order_id) {
 }
 
 function delete_all_orders() {
-    let result = confirm('Удалить все заказы?');
+    let result = confirm('Удалить ВСЕ заказы?');
 
     if (result) {
         let link = new XMLHttpRequest();
@@ -213,21 +214,4 @@ function get_add_modal_order(new_order_id) {
         order[field] = element.value;
     });
     return order;
-}
-
-function import_excel_modal() {
-    $('#import-excel-modal').modal('show');
-}
-function on_file_change() {
-    let input = document.getElementById('excel-file');
-    let label = document.getElementById('excel-file-label');
-
-    if (input.files.length === 1) {
-        label.innerText = input.files[0].name;
-    } else {
-        label.innerText = 'Выберите .xlsx файл';
-    }
-}
-function import_excel() {
-    $('#import-excel-modal').modal('hide');
 }

@@ -8,7 +8,7 @@
 
     $link = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_db);
     if ($link === false) {
-        exit('cannot connect MySQL');
+        exit('Cannot connect database');
     }
     $link->set_charset('utf8');
 ?>
