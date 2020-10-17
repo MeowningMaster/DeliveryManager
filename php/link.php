@@ -1,5 +1,5 @@
 <?php
-    mb_internal_encoding("UTF-8");
+    require_once('../response.php');
 
     $mysql_host = 'localhost';
     $mysql_db = 'main';
@@ -8,7 +8,8 @@
 
     $link = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_db);
     if ($link === false) {
-        exit('Cannot connect database');
+        send($error, $cannot_link_database);
+        exit();
     }
     $link->set_charset('utf8');
 ?>

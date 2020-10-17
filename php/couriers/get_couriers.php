@@ -1,18 +1,20 @@
 <?php
+    require_once('../response.php');
     require_once('../link.php');
 
     $query = 'SELECT * FROM couriers';
     $result = $link->query($query);
     if ($result === false) {
-        exit('Cannot query couriers');
+        send($error, $cannot_get_couriers);
+    } else {
+        $couriers = [];
+        while($row = mysqli_fetch_assoc($result)) {
+            $couriers[] = $row;
+        }
+
+        send($ok, $couriers);
+        $result->close();
     }
 
-    $couriers = [];
-    while($row = mysqli_fetch_assoc($result)) {
-        $couriers[] = $row;
-    }
-
-    echo json_encode($couriers);
-    $result->close();
     $link->close();
 ?>
