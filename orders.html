@@ -31,9 +31,63 @@
         <option value="Принят">
         <option value="Завершён">
         <option value="Отменён">
-        <option value="Зашёл">
         <option value="Отказ">
     </datalist>
+
+    <!-- Add order modal -->
+    <div class="modal" id="modal-add" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <h5 class="modal-title">Добавление заказа</h5>
+                <form onsubmit="add_order(); return false">
+                    <div class="form-group">
+                        <label for="modal-add-status" class="required">Статус</label>
+                        <input type="text" id="modal-add-status" class="form-control" placeholder="Принят" list="datalist-statuses" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-client" class="required">Клиент</label>
+                        <input type="text" id="modal-add-client" class="form-control" placeholder="Смирнов Владлен Анатолиевич" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-contacts">Контакты</label>
+                        <input type="text" id="modal-add-contacts" class="form-control" placeholder="+7-123-4567-890, @telegram_id">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-city">Город</label>
+                        <input type="text" id="modal-add-city" class="form-control" placeholder="Москва">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-address">Адрес</label>
+                        <input type="text" id="modal-add-address" class="form-control" placeholder="Тверская 12, кв. 43">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-date">Дата</label>
+                        <input type="date" id="modal-add-date" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-time">Время</label>
+                        <input type="time" id="modal-add-time" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-cost">Стоимость</label>
+                        <input type="number" id="modal-add-cost" class="form-control" placeholder="0" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-details">Подробности</label>
+                        <textarea id="modal-add-details" class="form-control" placeholder="Детали заказа или причина отказа"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-add-courier_id" class="required">Курьер</label>
+                        <select id="modal-add-courier_id" class="form-control" required></select>
+                    </div>
+                    <div class="text-right mt-20">
+                        <button class="btn mr-5" onclick="toggle_modal_add()">Отменить</button>
+                        <input type="submit" class="btn btn-primary" value="Добавить">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div class="page-wrapper with-navbar">
         <div class="sticky-alerts"></div>
@@ -65,13 +119,13 @@
                     <th>Дата</th>
                     <th>Время</th>
                     <th>Стоимость</th>
-                    <th>Детали</th>
+                    <th>Подробности</th>
                     <th>Курьер</th>
                     <th class="controls-cell">
                         <div class="btn-group">
                             <button class="btn"><i class="fas fa-filter"></i></button>
                             <button class="btn"><i class="fas fa-trash-alt"></i></button>
-                            <button class="btn"><i class="fas fa-plus"></i></button>
+                            <button class="btn" onclick="toggle_modal_add()"><i class="fas fa-plus"></i></button>
                         </div>
                     </th>
                 </tr>

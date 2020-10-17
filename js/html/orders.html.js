@@ -81,7 +81,33 @@ function display_order(order) {
     cell.appendChild(button_group);
 }
 
+function toggle_modal_add() {
+    halfmoon.toggleModal(modal_add);
+}
+function add_order() {
+    let order = parse_modal(modal_add, fields, 'id');
 
+    let request = {
+        success: add_order_success,
+        error: add_order_error,
+        data: extract_data(order),
+        success_data: order
+    }
+    send_request(php.add_order, request);
+}
+function add_order_success(response, data) {
+    let order = data;
+
+    order.id = response;
+    display_order(order);
+    orders.set(order.id, order);
+    toggle_modal_add();
+    clear_modal(modal_add, fields, 'id');
+}
+function add_order_error(response) {
+    console.log(response);
+    toast_error(error.cannot_add_order);
+}
 
 /*function edit_order_modal(event) {
     let order_id = event.target.name;
