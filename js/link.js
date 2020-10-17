@@ -1,4 +1,10 @@
 let php = {
+    get_orders: 'php/orders/get_orders.php',
+    add_order: 'php/orders/add_order.php',
+    delete_order: 'php/orders/delete_order.php',
+    delete_all_orders: 'php/orders/delete_all_orders.php',
+    edit_order: 'php/orders/edit_order.php',
+
     get_couriers: 'php/couriers/get_couriers.php',
     add_courier: 'php/couriers/add_courier.php',
     delete_courier: 'php/couriers/delete_courier.php',

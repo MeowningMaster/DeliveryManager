@@ -1,28 +1,29 @@
 let orders = new Map();
 
-function request_orders(on_ready) {
-    let link = new XMLHttpRequest();
-    link.onreadystatechange = function() {
-        request_orders_callback(link, on_ready);
-    }
-
-    link.open('GET', 'php/orders/get_orders.php');
-    link.send();
+function request_orders(on_loaded) {
+    let request = {
+        success: request_orders_success,
+        error: request_orders_error,
+        data: '',
+        success_data: on_loaded
+    };
+    send_request(php.get_orders, request);
 }
 
-function request_orders_callback(link, on_ready) {
-    if(link.readyState === 4) {
-        if(link.status === 200) {
-            let orders_array = JSON.parse(link.responseText);
-            orders_array.forEach(function(order) {
-                orders.set(order.id, order);
-            });
-            if (on_ready !== undefined) {
-                on_ready();
-            }
-        } else {
-            console.log(link.response);
-            alert('Не удалось загрузить список заказов. Проверьте подключение к интернету');
-        }
+function request_orders_success(response, data) {
+    let orders_array = response;
+    let on_loaded = data;
+
+    orders_array.forEach(function(order) {
+        orders.set(order.id, order);
+    });
+
+    if (on_loaded !== undefined) {
+        on_loaded();
     }
+}
+
+function request_orders_error(response) {
+    console.log(response);
+    toast_error(error.cannot_load_orders);
 }

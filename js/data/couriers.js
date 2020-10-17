@@ -17,6 +17,7 @@ function request_couriers_success(response, data) {
     couriers_array.forEach(function(courier) {
         couriers.set(courier.id, courier);
     });
+
     if (on_loaded !== undefined) {
         on_loaded();
     }

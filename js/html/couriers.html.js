@@ -1,12 +1,12 @@
 let table;
 let bindings = new Map();
-let courier_fields = ['id', 'name', 'status', 'contacts'];
+let fields = ['id', 'name', 'status', 'contacts'];
 let modal_add = 'modal-add';
 let modal_delete = 'modal-delete';
 let modal_edit = 'modal-edit';
 
 document.addEventListener("DOMContentLoaded", () => {
-    table = document.getElementById('table-couriers-body');
+    table = document.getElementById('table-body');
     request_couriers(display_couriers);
 });
 
@@ -21,11 +21,11 @@ function display_courier(courier) {
         let row = table.insertRow();
         courier_bindings.row = row;
 
-        courier_fields.forEach(function (field) {
+        fields.forEach(function (field) {
             let value = courier[field];
             let cell = row.insertCell();
-            cell.innerHTML = value;
             courier_bindings[field] = cell;
+            cell.innerHTML = value;
         });
 
         bindings.set(courier.id, courier_bindings);
@@ -63,7 +63,7 @@ function toggle_modal_add() {
     halfmoon.toggleModal(modal_add);
 }
 function add_courier() {
-    let courier = parse_modal(modal_add, courier_fields, 'id');
+    let courier = parse_modal(modal_add, fields, 'id');
 
     let request = {
         success: add_courier_success,
@@ -80,7 +80,7 @@ function add_courier_success(response, data) {
     display_courier(courier);
     couriers.set(courier.id, courier);
     toggle_modal_add();
-    clear_modal(modal_add, courier_fields, 'id');
+    clear_modal(modal_add, fields, 'id');
 }
 function add_courier_error(response) {
     console.log(response);
@@ -123,14 +123,14 @@ function delete_courier_error(response) {
 function open_modal_edit(event) {
     let edit_id = event.target.closest('button').name;
     let courier = couriers.get(edit_id);
-    fill_modal(modal_edit, courier_fields, courier);
+    fill_modal(modal_edit, fields, courier);
     toggle_modal_edit();
 }
 function toggle_modal_edit() {
     halfmoon.toggleModal(modal_edit);
 }
 function edit_courier() {
-    let courier = parse_modal(modal_edit, courier_fields);
+    let courier = parse_modal(modal_edit, fields);
 
     let request = {
         success: edit_courier_success,
@@ -145,7 +145,7 @@ function edit_courier_success(response, data) {
 
     couriers.set(courier.id, courier);
     let courier_bindings = bindings.get(courier.id);
-    courier_fields.forEach(function (field) {
+    fields.forEach(function (field) {
         courier_bindings[field].innerText = courier[field];
     });
     toggle_modal_edit();
