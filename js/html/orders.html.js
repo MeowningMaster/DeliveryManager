@@ -16,7 +16,7 @@ let processed_requests = 0;
 let total_requests = 2;
 function on_couriers_loaded() {
     processed_requests++;
-    //update_couriers();
+    update_couriers();
     on_request_process();
 }
 function on_orders_loaded() {
@@ -27,6 +27,17 @@ function on_request_process() {
     if (processed_requests === total_requests) {
         display_orders();
     }
+}
+function update_couriers() {
+    let selects = document.getElementsByClassName('courier-select');
+    Array.from(selects).forEach((select) => {
+        couriers.forEach((courier) => {
+            let option = document.createElement('option');
+            option.value = courier.id;
+            option.innerText = courier.name;
+            select.appendChild(option);
+        });
+    });
 }
 
 function display_orders() {
@@ -179,18 +190,6 @@ function delete_all_callback(link) {
             alert('Не удалось очистить список заказов. Проверьте подключение к интернету');
         }
     }
-}
-
-function update_couriers() {
-    let selects = document.getElementsByClassName('courier-select');
-    Array.from(selects).forEach((select) => {
-        couriers.forEach((courier) => {
-            let option = document.createElement('option');
-            option.value = courier.id;
-            option.innerText = courier.name;
-            select.appendChild(option);
-        });
-    });
 }
 
 function add_order_modal() {
