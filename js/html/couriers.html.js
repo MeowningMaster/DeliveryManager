@@ -92,7 +92,7 @@ function open_modal_delete(event) {
     delete_id = event.target.closest('button').name;
     let courier = couriers.get(delete_id);
     let output = document.getElementById('modal-delete-courier');
-    output.innerText = '№'+courier.id+': '+courier.name;
+    output.innerText = courier.id+': '+courier.name;
     toggle_modal_delete()
 }
 function toggle_modal_delete() {

@@ -76,7 +76,7 @@ function display_order(order) {
     edit_icon.classList.add('fa-edit');
     edit_button.appendChild(edit_icon)
     edit_button.classList.add('btn');
-    //edit_button.addEventListener('click', edit_order_modal);
+    edit_button.addEventListener('click', open_modal_edit);
     button_group.appendChild(edit_button);
 
     let delete_button = document.createElement('button');
@@ -86,7 +86,7 @@ function display_order(order) {
     delete_icon.classList.add('fa-eraser');
     delete_button.appendChild(delete_icon);
     delete_button.classList.add('btn');
-    //delete_button.addEventListener('click', delete_order);
+    delete_button.addEventListener('click', open_modal_delete);
     button_group.appendChild(delete_button);
 
     cell.appendChild(button_group);
@@ -120,132 +120,74 @@ function add_order_error(response) {
     toast_error(error.cannot_add_order);
 }
 
-/*function edit_order_modal(event) {
-    let order_id = event.target.name;
-    let order = orders.get(order_id);
-    fill_edit_modal(order);
-    $('#edit-order-modal').modal('show');
+let delete_id;
+function open_modal_delete(event) {
+    delete_id = event.target.closest('button').name;
+    let order = orders.get(delete_id);
+    let output = document.getElementById('modal-delete-order');
+    output.innerText = order.id+': '+order.client;
+    toggle_modal_delete()
 }
-function fill_edit_modal(order) {
-    for (const [key, value] of Object.entries(order)) {
-        let element = document.getElementById(edit_modal_prepend + key);
-        if (key === 'courier_id') {
-            element.value = order.courier_id;
+function toggle_modal_delete() {
+    halfmoon.toggleModal(modal_delete);
+}
+function delete_order() {
+    let request = {
+        success: delete_order_success,
+        error: delete_order_error,
+        data: 'order_id=' + delete_id,
+        success_data: delete_id
+    }
+    send_request(php.delete_order, request);
+}
+function delete_order_success(response, data) {
+    let order_id = data;
+
+    bindings.get(order_id).row.remove();
+    orders.delete(order_id);
+    bindings.delete(order_id);
+    toggle_modal_delete();
+}
+function delete_order_error(response) {
+    console.log(response);
+    toast_error(error.cannot_delete_order);
+}
+
+function open_modal_edit(event) {
+    let edit_id = event.target.closest('button').name;
+    let order = orders.get(edit_id);
+    fill_modal(modal_edit, fields, order);
+    toggle_modal_edit();
+}
+function toggle_modal_edit() {
+    halfmoon.toggleModal(modal_edit);
+}
+function edit_order() {
+    let order = parse_modal(modal_edit, fields);
+
+    let request = {
+        success: edit_order_success,
+        error: edit_order_error,
+        data: extract_data(order),
+        success_data: order
+    }
+    send_request(php.edit_order, request);
+}
+function edit_order_success(response, data) {
+    let order = data;
+
+    orders.set(order.id, order);
+    let order_bindings = bindings.get(order.id);
+    fields.forEach(function (field) {
+        if (field == 'courier_id') {
+            order_bindings[field].innerText = couriers.get(order.courier_id).name;
         } else {
-            element.value = value;
-        }
-    }
-}
-
-function delete_order(event) {
-    let order_id = event.target.name;
-    let order = orders.get(order_id);
-    let result = confirm('Удалить заказ №'+order.id+': '+order.client+' ['+order.date+']'+'?');
-
-    if (result) {
-        let link = new XMLHttpRequest();
-        link.onreadystatechange = function() {
-            delete_callback(link, order_id);
-        }
-
-        link.open('GET', 'php/orders/delete_order.php?order_id=' + order_id);
-        link.send();
-    }
-}
-function delete_callback(link, order_id) {
-    if(link.readyState === 4) {
-        if(link.status === 200) {
-            bindings.get(order_id).row.remove();
-            orders.delete(order_id);
-            bindings.delete(order_id);
-        } else {
-            console.log(link.response);
-            alert('Не удалось удалить заказ. Проверьте подключение к интернету');
-        }
-    }
-}
-
-function delete_all_orders() {
-    let result = confirm('Удалить ВСЕ заказы?');
-
-    if (result) {
-        let link = new XMLHttpRequest();
-        link.onreadystatechange = function() {
-            delete_all_callback(link);
-        }
-
-        link.open('GET', 'php/orders/delete_all_orders.php');
-        link.send();
-    }
-}
-function delete_all_callback(link) {
-    if(link.readyState === 4) {
-        if(link.status === 200) {
-            document.getElementById('table-orders-body').innerHTML = '';
-            orders.clear();
-            bindings.clear();
-        } else {
-            console.log(link.response);
-            console.log(link.responseText);
-            alert('Не удалось очистить список заказов. Проверьте подключение к интернету');
-        }
-    }
-}
-
-function add_order_modal() {
-    $('#add-order-modal').modal('show');
-}
-function clear_add_modal() {
-    fields.forEach((field) => {
-        let element = document.getElementById(add_modal_prepend + field);
-        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-            element.value = '';
-        } else if (element.tagName === 'SELECT') {
-            element.selectedIndex = 0;
+            order_bindings[field].innerText = order[field];
         }
     });
+    toggle_modal_edit();
 }
-function add_order() {
-    $('#add-order-modal').modal('hide');
-
-    let query = get_add_modal_query();
-
-    let link = new XMLHttpRequest();
-    link.onreadystatechange = function() {
-        add_order_callback(link);
-    }
-
-    link.open('GET', 'php/orders/add_order.php'+query);
-    link.send();
+function edit_order_error(response) {
+    console.log(response);
+    toast_error(error.cannot_edit_order);
 }
-function get_add_modal_query() {
-    let query = '?';
-    fields.forEach((field) => {
-        let element = document.getElementById(add_modal_prepend + field);
-        query += field+'=\''+element.value+'\'&';
-    });
-    return query;
-}
-function add_order_callback(link) {
-    if(link.readyState === 4) {
-        if(link.status === 200) {
-            let new_order_id = link.responseText;
-            let order = get_add_modal_order(new_order_id);
-            display_order(order);
-            orders.set(new_order_id, order);
-            clear_add_modal();
-        } else {
-            alert('Не удалось добавить заказ. Проверьте подключение к интернету');
-            console.log(link.response);
-        }
-    }
-}
-function get_add_modal_order(new_order_id) {
-    let order = {};
-    order['id'] = new_order_id;
-    fields.forEach((field) => {
-        let element = document.getElementById(add_modal_prepend + field);
-        order[field] = element.value;
-    });
-    return order;
-}*/
