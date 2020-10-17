@@ -153,6 +153,29 @@ function delete_order_error(response) {
     toast_error(error.cannot_delete_order);
 }
 
+function toggle_modal_delete_all() {
+    halfmoon.toggleModal(modal_delete_all);
+}
+function delete_all_orders() {
+    let request = {
+        success: delete_all_orders,
+        error: delete_all_orders,
+        data: '',
+        success_data: ''
+    }
+    send_request(php.delete_all_orders, request);
+}
+function delete_all_orders_success(response, data) {
+    orders.clear();
+    bindings.clear();
+    table.innerHTML = '';
+    toggle_modal_delete();
+}
+function delete_all_orders_error(response) {
+    console.log(response);
+    toast_error(error.cannot_delete_all_orders);
+}
+
 function open_modal_edit(event) {
     let edit_id = event.target.closest('button').name;
     let order = orders.get(edit_id);

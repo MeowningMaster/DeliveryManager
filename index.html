@@ -81,7 +81,7 @@
                         <select id="modal-add-courier_id" class="form-control courier-select" required></select>
                     </div>
                     <div class="text-right mt-20">
-                        <button class="btn mr-5" onclick="toggle_modal_add()">Отменить</button>
+                        <a class="btn mr-5" onclick="toggle_modal_add()">Отменить</a>
                         <input type="submit" class="btn btn-primary" value="Добавить">
                     </div>
                 </form>
@@ -96,8 +96,21 @@
                 <h5 class="modal-title">Удалить заказ?</h5>
                 <div id="modal-delete-order"></div>
                 <div class="text-right mt-20">
-                    <button class="btn mr-5" onclick="toggle_modal_delete()">Нет</button>
+                    <a class="btn mr-5" onclick="toggle_modal_delete()">Нет</a>
                     <button class="btn btn-primary" onclick="delete_order()">Да</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete all orders modal -->
+    <div class="modal" id="modal-delete-all" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <h5 class="modal-title">Удалить ВСЕ заказы?</h5>
+                <div class="text-right mt-20">
+                    <a class="btn mr-5" onclick="toggle_modal_delete_all()">Нет</a>
+                    <button class="btn btn-primary" onclick="delete_all_orders()">Да</button>
                 </div>
             </div>
         </div>
@@ -107,7 +120,7 @@
     <div class="modal" id="modal-edit" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <h5 class="modal-title">Добавление заказа</h5>
+                <h5 class="modal-title">Редактирование заказа</h5>
                 <form onsubmit="edit_order(); return false">
                     <div class="form-group">
                         <label for="modal-edit-id">Номер</label>
@@ -154,7 +167,7 @@
                         <select id="modal-edit-courier_id" class="form-control courier-select" required></select>
                     </div>
                     <div class="text-right mt-20">
-                        <button class="btn mr-5" onclick="toggle_modal_edit()">Отменить</button>
+                        <a class="btn mr-5" onclick="toggle_modal_edit()">Отменить</a>
                         <input type="submit" class="btn btn-primary" value="Сохранить">
                     </div>
                 </form>
@@ -197,7 +210,7 @@
                     <th class="controls-cell">
                         <div class="btn-group">
                             <button class="btn"><i class="fas fa-filter"></i></button>
-                            <button class="btn"><i class="fas fa-trash-alt"></i></button>
+                            <button class="btn" onclick="toggle_modal_delete_all()"><i class="fas fa-trash-alt"></i></button>
                             <button class="btn" onclick="toggle_modal_add()"><i class="fas fa-plus"></i></button>
                         </div>
                     </th>
