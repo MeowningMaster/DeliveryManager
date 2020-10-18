@@ -5,9 +5,12 @@ let modal_add = 'modal-add';
 let modal_delete = 'modal-delete';
 let modal_delete_all = 'modal-delete-all';
 let modal_edit = 'modal-edit';
+let modal_filter = 'modal-filter';
 
 document.addEventListener("DOMContentLoaded", () => {
     table = document.getElementById('table-body');
+    read_orders_filter();
+    assign_filter_input_event();
     request_couriers(on_couriers_loaded);
     request_orders(on_orders_loaded);
 });
@@ -25,6 +28,7 @@ function on_orders_loaded() {
 }
 function on_request_process() {
     if (processed_requests === total_requests) {
+        set_orders_filter();
         display_orders();
     }
 }
@@ -55,10 +59,12 @@ function display_order(order) {
         let cell = row.insertCell();
         order_bindings[field] = cell;
 
-        if (field == 'courier_id') {
-            cell.innerText = couriers.get(value).name;
-        } else {
-            cell.innerText = value;
+        switch (field) {
+            case 'courier_id':
+                cell.innerText = couriers.get(value).name;
+                break;
+            default:
+                cell.innerText = value;
         }
     });
 
@@ -158,8 +164,8 @@ function toggle_modal_delete_all() {
 }
 function delete_all_orders() {
     let request = {
-        success: delete_all_orders,
-        error: delete_all_orders,
+        success: delete_all_orders_success,
+        error: delete_all_orders_error,
         data: '',
         success_data: ''
     }
@@ -169,7 +175,7 @@ function delete_all_orders_success(response, data) {
     orders.clear();
     bindings.clear();
     table.innerHTML = '';
-    toggle_modal_delete();
+    toggle_modal_delete_all();
 }
 function delete_all_orders_error(response) {
     console.log(response);
@@ -202,10 +208,12 @@ function edit_order_success(response, data) {
     orders.set(order.id, order);
     let order_bindings = bindings.get(order.id);
     fields.forEach(function (field) {
-        if (field == 'courier_id') {
-            order_bindings[field].innerText = couriers.get(order.courier_id).name;
-        } else {
-            order_bindings[field].innerText = order[field];
+        switch (field) {
+            case 'courier_id':
+                order_bindings[field].innerText = couriers.get(order.courier_id).name;
+                break;
+            default:
+                order_bindings[field].innerText = order[field];
         }
     });
     toggle_modal_edit();
@@ -213,4 +221,83 @@ function edit_order_success(response, data) {
 function edit_order_error(response) {
     console.log(response);
     toast_error(error.cannot_edit_order);
+}
+
+function toggle_modal_filter() {
+    halfmoon.toggleModal(modal_filter);
+}
+function filter_orders() {
+    parse_orders_filter();
+    reload_orders();
+    toggle_modal_filter();
+}
+function read_orders_filter() {
+    let enabled = false;
+    filter_fields.forEach(function (field) {
+        let cookie_value = Cookies.get(field);
+
+        if (cookie_value !== undefined) {
+            enabled = true;
+            orders_filter[field].enabled = true;
+            orders_filter[field].data = cookie_value;
+        }
+    });
+    set_filter_button_active(enabled);
+}
+function set_orders_filter() {
+    filter_fields.forEach(function (field) {
+        let checkbox = document.getElementById(modal_filter + '-' + field + '-switch');
+        let input = document.getElementById(modal_filter + '-' + field);
+
+        checkbox.checked = orders_filter[field].enabled;
+        if (!field === 'courier_id' || orders_filter[field].enabled) {
+            input.value = orders_filter[field].data;
+        }
+    });
+}
+function parse_orders_filter() {
+    let enabled = false;
+    filter_fields.forEach(function (field) {
+        let checkbox = document.getElementById(modal_filter + '-' + field + '-switch');
+        let input = document.getElementById(modal_filter + '-' + field);
+
+        orders_filter[field].enabled = checkbox.checked;
+        orders_filter[field].data = input.value;
+        if (checkbox.checked) {
+            enabled = true;
+            Cookies.set(field, input.value);
+        } else {
+            if (Cookies.get(field) !== undefined) {
+                Cookies.remove(field);
+            }
+        }
+    });
+    set_filter_button_active(enabled);
+}
+function set_filter_button_active(state) {
+    let button = document.getElementById('orders_filter_button');
+
+    if (state) {
+        button.classList.add('btn-secondary');
+    } else {
+        button.classList.remove('btn-secondary');
+    }
+}
+function reload_orders() {
+    orders.clear();
+    bindings.clear();
+    table.innerHTML = '';
+    request_orders(display_orders);
+}
+function assign_filter_input_event() {
+    let inputs = document.querySelectorAll('.filter-input');
+    inputs.forEach(function(input) {
+        input.addEventListener('input', filter_input_change);
+    });
+}
+function filter_input_change(event) {
+    let input = event.target;
+    let checkbox_id = input.id + '-switch';
+    let checkbox = document.getElementById(checkbox_id);
+    checkbox.checked = true;
 }

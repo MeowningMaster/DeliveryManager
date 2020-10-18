@@ -16,6 +16,9 @@
         <!-- Font Awesome-->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
 
+        <!-- js-cookie *https://github.com/js-cookie/js-cookie* -->
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
         <!-- Internal -->
         <link rel="stylesheet" href="css/main.css">
         <script src="js/error.js"></script>
@@ -34,7 +37,7 @@
         <option value="Отказ">
     </datalist>
 
-    <!-- Add order modal -->
+    <!-- Add modal -->
     <div class="modal" id="modal-add" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -45,7 +48,7 @@
                         <input type="text" id="modal-add-status" class="form-control" placeholder="Принят" list="datalist-statuses" required>
                     </div>
                     <div class="form-group">
-                        <label for="modal-add-client" class="required">Клиент</label>
+                        <label for="modal-add-client" class="required">Заказчик</label>
                         <input type="text" id="modal-add-client" class="form-control" placeholder="Смирнов Владлен Анатолиевич" required>
                     </div>
                     <div class="form-group">
@@ -89,7 +92,7 @@
         </div>
     </div>
 
-    <!-- Delete order modal -->
+    <!-- Delete modal -->
     <div class="modal" id="modal-delete" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -103,20 +106,20 @@
         </div>
     </div>
 
-    <!-- Delete all orders modal -->
+    <!-- Delete all modal -->
     <div class="modal" id="modal-delete-all" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <h5 class="modal-title">Удалить ВСЕ заказы?</h5>
                 <div class="text-right mt-20">
                     <a class="btn mr-5" onclick="toggle_modal_delete_all()">Нет</a>
-                    <button class="btn btn-primary" onclick="delete_all_orders()">Да</button>
+                    <a class="btn btn-primary" onclick="delete_all_orders()">Да</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit order modal -->
+    <!-- Edit modal -->
     <div class="modal" id="modal-edit" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -131,7 +134,7 @@
                         <input type="text" id="modal-edit-status" class="form-control" placeholder="Принят" list="datalist-statuses" required>
                     </div>
                     <div class="form-group">
-                        <label for="modal-edit-client" class="required">Клиент</label>
+                        <label for="modal-edit-client" class="required">Заказчик</label>
                         <input type="text" id="modal-edit-client" class="form-control" placeholder="Смирнов Владлен Анатолиевич" required>
                     </div>
                     <div class="form-group">
@@ -175,6 +178,93 @@
         </div>
     </div>
 
+    <!-- Filter modal -->
+    <div class="modal" id="modal-filter" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <h5 class="modal-title">Фильтровать заказы</h5>
+                <form onsubmit="filter_orders(); return false">
+
+                    <div class="form-group">
+                        <label for="modal-filter-status">Статус</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <div class="custom-switch">
+                                        <input type="checkbox" id="modal-filter-status-switch" value="">
+                                        <label for="modal-filter-status-switch" class="blank"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" id="modal-filter-status" class="form-control filter-input" placeholder="Принят" list="datalist-statuses">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-filter-client">Заказчик</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <div class="custom-switch">
+                                        <input type="checkbox" id="modal-filter-client-switch" value="">
+                                        <label for="modal-filter-client-switch" class="blank"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" id="modal-filter-client" class="form-control filter-input" placeholder="Смирнов Владлен Анатолиевич">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-filter-city">Город</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <div class="custom-switch">
+                                        <input type="checkbox" id="modal-filter-city-switch" value="">
+                                        <label for="modal-filter-city-switch" class="blank"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="text" id="modal-filter-city" class="form-control filter-input" placeholder="Москва">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-filter-date">Дата</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <div class="custom-switch">
+                                        <input type="checkbox" id="modal-filter-date-switch" value="">
+                                        <label for="modal-filter-date-switch" class="blank"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="date" id="modal-filter-date" class="form-control filter-input">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-filter-courier_id">Курьер</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <div class="custom-switch">
+                                        <input type="checkbox" id="modal-filter-courier_id-switch" value="">
+                                        <label for="modal-filter-courier_id-switch" class="blank"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <select id="modal-filter-courier_id" class="form-control courier-select filter-input" required></select>
+                        </div>
+                    </div>
+
+                    <div class="text-right mt-20">
+                        <a class="btn mr-5" onclick="toggle_modal_filter()">Отменить</a>
+                        <input type="submit" class="btn btn-primary" value="Применить">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div class="page-wrapper with-navbar">
         <div class="sticky-alerts"></div>
 
@@ -209,7 +299,7 @@
                     <th>Курьер</th>
                     <th class="controls-cell">
                         <div class="btn-group">
-                            <button class="btn"><i class="fas fa-filter"></i></button>
+                            <button id="orders_filter_button" class="btn" onclick="toggle_modal_filter()"><i class="fas fa-filter"></i></button>
                             <button class="btn" onclick="toggle_modal_delete_all()"><i class="fas fa-trash-alt"></i></button>
                             <button class="btn" onclick="toggle_modal_add()"><i class="fas fa-plus"></i></button>
                         </div>
