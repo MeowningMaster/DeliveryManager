@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function display_couriers() {
+    display_couriers_summary();
     couriers.forEach(function(courier) {
         display_courier(courier);
     });
@@ -30,32 +31,7 @@ function display_courier(courier) {
 
         bindings.set(courier.id, courier_bindings);
         let cell = row.insertCell();
-        cell.classList.add('controls-cell');
-
-        let button_group = document.createElement('div');
-        button_group.classList.add('btn-group');
-
-        let edit_button = document.createElement('button');
-        let edit_icon = document.createElement('i');
-        edit_button.name = courier.id;
-        edit_icon.classList.add('fas');
-        edit_icon.classList.add('fa-edit');
-        edit_button.appendChild(edit_icon);
-        edit_button.classList.add('btn');
-        edit_button.addEventListener('click', open_modal_edit);
-        button_group.appendChild(edit_button);
-
-        let delete_button = document.createElement('button');
-        let delete_icon = document.createElement('i');
-        delete_button.name = courier.id;
-        delete_icon.classList.add('fas');
-        delete_icon.classList.add('fa-eraser');
-        delete_button.appendChild(delete_icon);
-        delete_button.classList.add('btn');
-        delete_button.addEventListener('click', open_modal_delete);
-        button_group.appendChild(delete_button);
-
-        cell.appendChild(button_group);
+        add_controls(cell, courier, open_modal_edit, open_modal_delete);
     }
 }
 
@@ -79,6 +55,7 @@ function add_courier_success(response, data) {
     courier.id = response;
     display_courier(courier);
     couriers.set(courier.id, courier);
+    display_couriers_summary();
     toggle_modal_add();
     clear_modal(modal_add, fields, 'id');
 }
@@ -113,6 +90,7 @@ function delete_courier_success(response, data) {
     bindings.get(courier_id).row.remove();
     couriers.delete(courier_id);
     bindings.delete(courier_id);
+    display_couriers_summary();
     toggle_modal_delete();
 }
 function delete_courier_error(response) {
@@ -148,9 +126,41 @@ function edit_courier_success(response, data) {
     fields.forEach(function (field) {
         courier_bindings[field].innerText = courier[field];
     });
+    display_couriers_summary();
     toggle_modal_edit();
 }
 function edit_courier_error(response) {
     console.log(response);
     toast_error(error.cannot_edit_courier);
+}
+
+function display_couriers_summary() {
+    let by_status = new Map();
+
+    couriers.forEach(function (courier) {
+        if (courier.id !== '1') {
+            let status = courier.status;
+            if (by_status.has(status)) {
+                by_status.set(status, by_status.get(status) + 1);
+            } else {
+                by_status.set(status, 1);
+            }
+        }
+    });
+
+    let summary_table = document.getElementById('couriers_summary');
+    summary_table.innerHTML = '';
+
+    for (let [key, value] of by_status.entries()) {
+        let row = summary_table.insertRow();
+        let cell_key = row.insertCell();
+        let cell_value = row.insertCell();
+
+        if (key === '') {
+            cell_key.innerText = '*нет статуса*';
+        } else {
+            cell_key.innerText = key;
+        }
+        cell_value.innerText = value;
+    }
 }

@@ -2,17 +2,17 @@
     require_once('../response.php');
     require_once('../link.php');
 
-    $query = 'SELECT * FROM couriers';
+    $query = 'SELECT * FROM operators';
     $result = $link->query($query);
     if ($result === false) {
-        send($error, $cannot_get_couriers);
+        send($error, $cannot_get_operators);
     } else {
-        $couriers = [];
+        $operators = [];
         while($row = mysqli_fetch_assoc($result)) {
-            $couriers[] = $row;
+            $operators[] = $row;
         }
 
-        send($ok, $couriers);
+        send($ok, $operators);
     }
 
     $link->close();

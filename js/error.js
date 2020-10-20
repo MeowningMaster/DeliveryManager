@@ -11,7 +11,12 @@ let error = {
     cannot_load_couriers: 'Не удалось загрузить список курьеров',
     cannot_add_courier: 'Не удаеться добавить курьера',
     cannot_delete_courier: 'Не удаеться удалить курьера',
-    cannot_edit_courier: 'Не удаеться изменить данные курьера'
+    cannot_edit_courier: 'Не удаеться изменить данные курьера',
+
+    cannot_load_operators: 'Не удалось загрузить список операторов',
+    cannot_add_operator: 'Не удаеться добавить оператора',
+    cannot_delete_operator: 'Не удаеться удалить оператора',
+    cannot_edit_operator: 'Не удаеться изменить данные оператора'
 }
 
 let error_title = {

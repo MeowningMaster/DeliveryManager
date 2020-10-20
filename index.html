@@ -24,6 +24,7 @@
         <script src="js/error.js"></script>
         <script src="js/link.js"></script>
         <script src="js/modal.js"></script>
+        <script src="js/html/table_controls.js"></script>
         <script src="js/data/orders.js"></script>
         <script src="js/data/couriers.js"></script>
         <script src="js/html/orders.html.js"></script>
@@ -127,7 +128,7 @@
                 <form onsubmit="edit_order(); return false">
                     <div class="form-group">
                         <label for="modal-edit-id">Номер</label>
-                        <input type="text" id="modal-edit-id" class="form-control" placeholder="1" disabled>
+                        <input type="text" id="modal-edit-id" class="form-control" placeholder="1" readonly>
                     </div>
                     <div class="form-group">
                         <label for="modal-edit-status" class="required">Статус</label>
@@ -272,43 +273,67 @@
             <p class="navbar-brand">
                 <img src="favicon.png" alt="Иконка сайта">
             </p>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <a href="./" class="nav-link"><i class="fas fa-dolly mr-5"></i>Заказы</a>
                 </li>
                 <li class="nav-item">
-                    <a href="couriers.html" class="nav-link"><i class="fas fa-user-tie mr-5"></i>Курьеры</a>
+                    <a href="couriers.html" class="nav-link"><i class="fas fa-user mr-5"></i>Курьеры</a>
+                </li>
+                <li class="nav-item">
+                    <a href="operators.html" class="nav-link"><i class="fas fa-user-secret mr-5"></i>Операторы</a>
                 </li>
             </ul>
+            <button class="btn btn-square" onclick="halfmoon.toggleDarkMode()">
+                <i class="fa fa-moon"></i>
+            </button>
         </nav>
 
         <div class="content-wrapper">
             <table class="table table-striped table-hover">
                 <thead>
-                <tr>
-                    <th>№</th>
-                    <th>Статус</th>
-                    <th>Заказчик</th>
-                    <th>Контакты</th>
-                    <th>Город</th>
-                    <th>Адрес</th>
-                    <th>Дата</th>
-                    <th>Время</th>
-                    <th>Стоимость</th>
-                    <th>Подробности</th>
-                    <th>Курьер</th>
-                    <th class="controls-cell">
-                        <div class="btn-group">
-                            <button id="orders_filter_button" class="btn" onclick="toggle_modal_filter()"><i class="fas fa-filter"></i></button>
-                            <button class="btn" onclick="toggle_modal_delete_all()"><i class="fas fa-trash-alt"></i></button>
-                            <button class="btn" onclick="toggle_modal_add()"><i class="fas fa-plus"></i></button>
-                        </div>
-                    </th>
-                </tr>
+                    <tr>
+                        <th>№</th>
+                        <th>Статус</th>
+                        <th>Заказчик</th>
+                        <th>Контакты</th>
+                        <th>Город</th>
+                        <th>Адрес</th>
+                        <th>Дата</th>
+                        <th>Время</th>
+                        <th>Стоимость</th>
+                        <th>Подробности</th>
+                        <th>Курьер</th>
+                        <th class="controls-cell">
+                            <div class="btn-group">
+                                <button id="orders_filter_button" class="btn" onclick="toggle_modal_filter()"><i class="fas fa-filter"></i></button>
+                                <button class="btn" onclick="toggle_modal_delete_all()"><i class="fas fa-trash-alt"></i></button>
+                                <button class="btn" onclick="toggle_modal_add()"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </th>
+                    </tr>
                 </thead>
-                <tbody id="table-body">
-                </tbody>
+                <tbody id="table-body"></tbody>
             </table>
+            <div class="content w-300">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2" id="title-summary">Сводка</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Количество</td>
+                            <td id="count-summary"></td>
+                        </tr>
+                        <tr>
+                            <td>Сумма</td>
+                            <td id="cost-summary"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     </body>

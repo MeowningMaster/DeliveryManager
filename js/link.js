@@ -8,7 +8,12 @@ let php = {
     get_couriers: 'php/couriers/get_couriers.php',
     add_courier: 'php/couriers/add_courier.php',
     delete_courier: 'php/couriers/delete_courier.php',
-    edit_courier: 'php/couriers/edit_courier.php'
+    edit_courier: 'php/couriers/edit_courier.php',
+
+    get_operators: 'php/operators/get_operators.php',
+    add_operator: 'php/operators/add_operator.php',
+    delete_operator: 'php/operators/delete_operator.php',
+    edit_operator: 'php/operators/edit_operator.php'
 }
 
 function send_request(php_file, request) {

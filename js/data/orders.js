@@ -52,6 +52,8 @@ function request_orders_success(response, data) {
         orders.set(order.id, order);
     });
 
+    console.log('orders loaded');
+
     if (on_loaded !== undefined) {
         on_loaded();
     }

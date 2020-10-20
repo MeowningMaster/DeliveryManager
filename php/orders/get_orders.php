@@ -30,7 +30,6 @@
         }
 
         send($ok, $orders);
-        $result->close();
     }
 
     $link->close();

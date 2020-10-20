@@ -29,6 +29,7 @@ function on_orders_loaded() {
 function on_request_process() {
     if (processed_requests === total_requests) {
         set_orders_filter();
+        display_summary();
         display_orders();
     }
 }
@@ -66,36 +67,15 @@ function display_order(order) {
             default:
                 cell.innerText = value;
         }
+
+        if (field === 'cost') {
+            cell.innerText += ' ₽';
+        }
     });
 
     bindings.set(order.id, order_bindings);
     let cell = row.insertCell();
-    cell.classList.add('controls-cell');
-
-    let button_group = document.createElement('div');
-    button_group.classList.add('btn-group');
-
-    let edit_button = document.createElement('button');
-    let edit_icon = document.createElement('i');
-    edit_button.name = order.id;
-    edit_icon.classList.add('fas');
-    edit_icon.classList.add('fa-edit');
-    edit_button.appendChild(edit_icon)
-    edit_button.classList.add('btn');
-    edit_button.addEventListener('click', open_modal_edit);
-    button_group.appendChild(edit_button);
-
-    let delete_button = document.createElement('button');
-    let delete_icon = document.createElement('i');
-    delete_button.name = order.id;
-    delete_icon.classList.add('fas');
-    delete_icon.classList.add('fa-eraser');
-    delete_button.appendChild(delete_icon);
-    delete_button.classList.add('btn');
-    delete_button.addEventListener('click', open_modal_delete);
-    button_group.appendChild(delete_button);
-
-    cell.appendChild(button_group);
+    add_controls(cell, order, open_modal_edit, open_modal_delete);
 }
 
 function toggle_modal_add() {
@@ -118,6 +98,7 @@ function add_order_success(response, data) {
     order.id = response;
     display_order(order);
     orders.set(order.id, order);
+    display_summary();
     toggle_modal_add();
     clear_modal(modal_add, fields, 'id');
 }
@@ -152,6 +133,7 @@ function delete_order_success(response, data) {
     bindings.get(order_id).row.remove();
     orders.delete(order_id);
     bindings.delete(order_id);
+    display_summary();
     toggle_modal_delete();
 }
 function delete_order_error(response) {
@@ -175,6 +157,7 @@ function delete_all_orders_success(response, data) {
     orders.clear();
     bindings.clear();
     table.innerHTML = '';
+    display_summary();
     toggle_modal_delete_all();
 }
 function delete_all_orders_error(response) {
@@ -216,6 +199,7 @@ function edit_order_success(response, data) {
                 order_bindings[field].innerText = order[field];
         }
     });
+    display_summary();
     toggle_modal_edit();
 }
 function edit_order_error(response) {
@@ -242,6 +226,7 @@ function read_orders_filter() {
             orders_filter[field].data = cookie_value;
         }
     });
+    set_summary_title(enabled);
     set_filter_button_active(enabled);
 }
 function set_orders_filter() {
@@ -272,6 +257,7 @@ function parse_orders_filter() {
             }
         }
     });
+    set_summary_title(enabled);
     set_filter_button_active(enabled);
 }
 function set_filter_button_active(state) {
@@ -287,7 +273,11 @@ function reload_orders() {
     orders.clear();
     bindings.clear();
     table.innerHTML = '';
-    request_orders(display_orders);
+    request_orders(on_reloaded);
+}
+function on_reloaded() {
+    display_summary();
+    display_orders();
 }
 function assign_filter_input_event() {
     let inputs = document.querySelectorAll('.filter-input');
@@ -300,4 +290,33 @@ function filter_input_change(event) {
     let checkbox_id = input.id + '-switch';
     let checkbox = document.getElementById(checkbox_id);
     checkbox.checked = true;
+}
+
+function display_summary() {
+    display_count_summary();
+    display_cost_summary();
+}
+function set_summary_title(state) {
+    let cell = document.getElementById('title-summary');
+
+    if (state) {
+        cell.innerText = 'Сводка по фильтру';
+    } else {
+        cell.innerText = 'Сводка';
+    }
+}
+function display_count_summary() {
+    let cell = document.getElementById('count-summary');
+    let count = orders.size;
+    cell.innerText = count;
+}
+function display_cost_summary() {
+    let cell = document.getElementById('cost-summary');
+    let cost = 0;
+
+    orders.forEach(function (order) {
+        cost += parseInt(order.cost);
+    });
+
+    cell.innerText = cost + ' ₽';
 }

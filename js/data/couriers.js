@@ -18,6 +18,8 @@ function request_couriers_success(response, data) {
         couriers.set(courier.id, courier);
     });
 
+    console.log('couriers loaded');
+
     if (on_loaded !== undefined) {
         on_loaded();
     }
