@@ -1,11 +1,11 @@
 <?php
-    require_once('response.php');
-    require_once('connection.php');
-    require_once('account.php');
-    require_once('order.php');
+    require_once(__DIR__.'../response.php');
+    require_once(__DIR__.'../connection.php');
+    require_once(__DIR__.'../data/account.php');
+    require_once(__DIR__.'../data/order.php');
 
     if (array_key_exists('request_type', $_GET) && array_key_exists('sender_login', $_GET) && array_key_exists('sender_password', $_GET)) {
-        $link = Link::open();
+        $link = Connection::open();
         $request_type = $_GET['request_type'];
         $sender = Account::from_login($_GET['sender_login'], $_GET['sender_password']);
         $login_err = $sender->login($link);
@@ -53,7 +53,6 @@
         } else {
             Response::send_err($login_err);
         }
-        Link::close($link);
     } else {
         Response::send_err(ErrList::$missing_request_fields);
     }

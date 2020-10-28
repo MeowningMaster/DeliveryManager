@@ -67,6 +67,26 @@ uid, type, login, password, name, status, phone_number, telegram_id
 uid, status, client, contacts, city, address, date, time, cost, details, operator_uid, courier_uid
 ```
 
+#### Получить заказ
+```http request
+{host}/php/interface/order_interface.php?request_type=get&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&uid={тут uid запрашиваемого заказа}
+```
+
+#### Добавить заказ
+```http request
+{host}/php/interface/order_interface.php?request_type=add&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&...{все поля нового заказа}
+```
+
+#### Удалить заказ
+```http request
+{host}/php/interface/order_interface.php?request_type=delete&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&uid={uid удаляемого заказа}
+```
+
+#### Редактировать заказ
+```http request
+{host}/php/interface/order_interface.php?request_type=edit&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&...{поля редактируемого заказа}
+```
+
 ## Ответ от сервера
 Если все верно, сервер вернет json:
 ```json
