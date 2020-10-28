@@ -1,6 +1,6 @@
 <?php
     require_once('response.php');
-    require_once('link.php');
+    require_once('connection.php');
     require_once('account.php');
 
     if (array_key_exists('request_type', $_GET) && array_key_exists('sender_login', $_GET) && array_key_exists('sender_password', $_GET)) {

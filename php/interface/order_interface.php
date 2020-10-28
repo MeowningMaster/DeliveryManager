@@ -1,6 +1,6 @@
 <?php
     require_once('response.php');
-    require_once('link.php');
+    require_once('connection.php');
     require_once('account.php');
     require_once('order.php');
 

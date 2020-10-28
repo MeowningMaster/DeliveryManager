@@ -1,6 +1,6 @@
 <?php
     mb_internal_encoding("UTF-8");
-    require_once ('error.php');
+    require_once (__DIR__.'/error.php');
 
     class Response {
         public static function send_ok($data) {

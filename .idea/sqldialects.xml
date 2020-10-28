@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/php/link.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/php/connection.php" dialect="GenericSQL" />
   </component>
   <component name="SqlResolveMappings">
-    <file url="file://$PROJECT_DIR$/php/account.php" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;903f9dd2-cc80-4a5f-aa60-57ab9a8401c1&quot;    }   }  } }}" />
+    <file url="file://$PROJECT_DIR$/php/data/account.php" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;name&quot;:{     &quot;@qname&quot;:&quot;903f9dd2-cc80-4a5f-aa60-57ab9a8401c1&quot;    }   }  } }}" />
   </component>
 </project>
