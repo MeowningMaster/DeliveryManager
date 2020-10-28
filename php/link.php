@@ -1,15 +1,25 @@
 <?php
-    require_once('../response.php');
+    require_once('response.php');
 
-    $mysql_host = 'localhost';
-    $mysql_db = 'u1113801_delivery_manager';
-    $mysql_user = 'u1113801';
-    $mysql_password = 'F0s7B4y8';
+    class Link {
+        private static $host = 'localhost';
+        private static $database = 'main'; //'u1113801_delivery_manager'
+        private static $user = 'root'; //'u1113801'
+        private static $password = ''; //'F0s7B4y8'
 
-    $link = mysqli_connect($mysql_host, $mysql_user, $mysql_password, $mysql_db);
-    if ($link === false) {
-        send($error, $cannot_link_database);
-        exit();
+        public static function open() {
+            $link = mysqli_connect(self::$host, self::$user, self::$password, self::$database);
+            if ($link === false) {
+                Response::send_err(ErrList::$cannot_link_database);
+                exit();
+            }
+
+            $link->set_charset('utf8');
+            return $link;
+        }
+
+        public static function close($link) {
+            $link->close();
+        }
     }
-    $link->set_charset('utf8');
 ?>

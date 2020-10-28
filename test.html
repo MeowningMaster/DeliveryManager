@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Менеджер доставок</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+
+    <!-- Halfmoon -->
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/css/halfmoon-variables.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.1/js/halfmoon.min.js"></script>
+
+    <!-- Font Awesome-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+
+    <!-- js-cookie *https://github.com/js-cookie/js-cookie* -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+
+    <!-- Internal -->
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/error.js"></script>
+    <script src="js/link.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/components.js"></script>
+</head>
+<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-dm-shortcut-enabled="true" data-set-preferred-mode-onload="true">
+
+<!-- Login modal -->
+<div class="modal show modal-full" id="login-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content h-full d-flex justify-content-center align-items-start">
+            <div class="card w-400">
+                <h4 class="text-muted font-weight-medium">
+                    <img src="images/favicon_small.png" id="login-modal-favicon" alt="favicon">
+                    Менеджер доставок
+                </h4>
+                <form id="login-form" onsubmit="login_form__onsubmit()">
+                    <div class="form-group">
+                        <label for="login-form--username" class="required">Логин</label>
+                        <input type="text" class="form-control" id="login-form--username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-form--password" class="required">Пароль</label>
+                        <input type="password" class="form-control" id="login-form--password" name="password" required>
+                    </div>
+                    <div class="text-right mt-20">
+                        <input type="submit" class="btn btn-primary" value="Вход">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-wrapper with-navbar">
+    <div class="sticky-alerts"></div>
+
+    <nav class="navbar">
+        <p class="navbar-brand">
+            <img src="images/favicon.png" alt="Иконка сайта">
+        </p>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a href="./" class="nav-link"><i class="fas fa-dolly mr-5"></i>Заказы</a>
+            </li>
+            <li class="nav-item">
+                <a href="couriers.html" class="nav-link"><i class="fas fa-user mr-5"></i>Аккаунты</a>
+            </li>
+        </ul>
+        <button class="btn btn-square" onclick="halfmoon.toggleDarkMode()">
+            <i class="fa fa-moon"></i>
+        </button>
+    </nav>
+
+    <div class="content-wrapper">
+
+    </div>
+</div>
+</body>
+</html>

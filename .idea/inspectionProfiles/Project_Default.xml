@@ -7,6 +7,7 @@
       </Languages>
     </inspection_tool>
     <inspection_tool class="HtmlFormInputWithoutLabel" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="HtmlRequiredAltAttribute" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myValues">
         <value>
@@ -35,5 +36,9 @@
       <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
     <inspection_tool class="JSUnfilteredForInLoop" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PhpRedundantClosingTagInspection" enabled="true" level="INFORMATION" enabled_by_default="true" />
+    <inspection_tool class="PhpUndefinedVariableInspection" enabled="true" level="INFORMATION" enabled_by_default="true">
+      <option name="IGNORE_INCLUDE" value="true" />
+    </inspection_tool>
   </profile>
 </component>
