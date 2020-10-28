@@ -1,5 +1,5 @@
-#Руководство по запросам
-##Основное
+# Руководство по запросам
+## Основное
 Запросы пересылаються способом `GET` и обрабатываються php на сервере.
 Важно! Все поля в запросе дожны быть закодированы (URL encode) [онлайн форма для кодировки](https://www.urlencoder.org/).
 * php: [urlencode](https://www.php.net/manual/en/function.urlencode.php)  
@@ -18,9 +18,9 @@ password: %pvx6+;4vz6pUc4+
 * c#: [json.net](https://www.newtonsoft.com/json)
 
 
-##Доступ к данным
-###Пользователи
-####Поля
+## Доступ к данным
+### Пользователи
+#### Поля
 ```javascript
 uid, type, login, password, name, status, phone_number, telegram_id
 ```
@@ -32,42 +32,42 @@ uid, type, login, password, name, status, phone_number, telegram_id
 
 `status` — статус работника (Работает, Заболел, Отпуск, Пол дня...)
 
-####Правила доступа
+#### Правила доступа
 Получить данные другого пользователя может только пользователь тип которого меньше (чем меньше тип тем больше привилегии). Операторы не могут узнать логин или пароль курьеров.
 Только админы и координаторы могут добавлять, изменять и удалять аккаунты, видеть логины и пароли. Координаторы не могут менять или видеть список координаторов и админа.
 
-####Получить данные пользователя по логину и паролю
+#### Получить данные пользователя по логину и паролю
 ```http request
-{host}/php/account_interface.php?request_type=login&sender_login={тут логин}&sender_password={тут пароль}
+{host}/php/interface/account_interface.php?request_type=login&sender_login={тут логин}&sender_password={тут пароль}
 ```
 
-####Получить данные другого пользователя
+#### Получить данные другого пользователя
 ```http request
-{host}/php/account_interface.php?request_type=get&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&uid={тут uid запрашиваемого пользователя}
+{host}/php/interface/account_interface.php?request_type=get&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&uid={тут uid запрашиваемого пользователя}
 ```
 
-####Добавить пользователя
+#### Добавить пользователя
 ```http request
-{host}/php/account_interface.php?request_type=add&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&type={тип нового пользователя}&login={логин нового пользователя}&password={пароль нового пользователя} и так для всех полей нового пользователя кроме uid
+{host}/php/interface/account_interface.php?request_type=add&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&type={тип нового пользователя}&login={логин нового пользователя}&password={пароль нового пользователя} и так для всех полей нового пользователя кроме uid
 ```
 
-####Удалить пользователя
+#### Удалить пользователя
 ```http request
-{host}/php/account_interface.php?request_type=delete&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&uid={uid удаляемого пользователя}
+{host}/php/interface/account_interface.php?request_type=delete&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&uid={uid удаляемого пользователя}
 ```
 
-####Редактировать пользователя
+#### Редактировать пользователя
 ```http request
-{host}/php/account_interface.php?request_type=edit&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&type={новый тип}&login={новый логин}&password={новый пароль} и так для всех полей пользователя кроме uid
+{host}/php/interface/account_interface.php?request_type=edit&sender_login={тут логин отправителя}&sender_password={тут пароль отправителя}&type={новый тип}&login={новый логин}&password={новый пароль} и так для всех полей пользователя кроме uid
 ```
 
-###Заказы
-####Поля
+### Заказы
+#### Поля
 ```javascript
 uid, status, client, contacts, city, address, date, time, cost, details, operator_uid, courier_uid
 ```
 
-##Ответ от сервера
+## Ответ от сервера
 Если все верно, сервер вернет json:
 ```json
 {"status":200,"data":{тут ответ}}
